@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>컴퍼니수수 웹페이지</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:sans-serif;background:#fff}
+
+    /* NAV */
+    nav{
+      position:fixed;top:0;left:0;width:100%;height:60px;
+      background:rgba(255,255,255,.95);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 40px;z-index:1000;box-shadow:0 2px 6px rgba(0,0,0,.1)
+    }
+    .logo{height:40px;margin-right:20px}
+    nav .nav-container{display:flex;align-items:center;gap:40px}
+    nav ul{display:flex;list-style:none;gap:30px}
+    nav ul li a{color:#111;font-weight:bold;font-size:14px;letter-spacing:1px;text-decoration:none}
+    nav ul li a:hover{text-decoration:underline}
+    .gnb-icons{display:flex;align-items:center;gap:20px}
+    .gnb-icons img{width:22px;height:22px}
+
+    /* HERO */
+    .hero{position:relative;width:100%;height:25vh;overflow:hidden;z-index:0;margin-top:60px;
+      background-image:url('./img/1d6ee81bd10e8bfb0a263b795b7daecd.jpg'); /* 요청하신 파일명 보존 */
+      background-size:cover;background-position:center}
+    .hero iframe{width:100%;height:100%;object-fit:cover;border:none}
+
+    /* LAYOUT */
+    #wrapper{}
+    section{
+      width:100%;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;padding:60px 20px;border-bottom:2px solid #eee;background-size:cover;background-position:center
+    }
+    section h2{font-size:2.2rem;margin-bottom:10px;color:#111}
+    section p{font-size:1.2rem;max-width:700px;line-height:1.6}
+    section img.character{width:200px;margin-top:20px}
+
+    .text-box{
+      background:rgba(0,0,0,.5);color:#fff;padding:20px;border-radius:10px;
+      text-shadow:1px 1px 3px rgba(0,0,0,.6);max-width:800px;box-shadow:0 4px 12px rgba(0,0,0,.3)
+    }
+    .dark-heading{
+      background:rgba(0,0,0,.5);color:#fff;padding:12px 24px;border-radius:10px;display:inline-block;
+      text-shadow:1px 1px 3px rgba(0,0,0,.6);margin-bottom:20px
+    }
+
+    .video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:30px;justify-items:center;margin-top:40px;width:100%;max-width:1200px}
+    .video-item{width:100%;max-width:350px;height:200px;background:#111;border-radius:10px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+    .video-item iframe{width:100%;height:100%;border:0;border-radius:10px}
+    .video-note{font-size:.9rem;color:#555;margin-top:20px}
+
+    .tab-button{background:none;border:none;font-weight:bold;font-size:14px;cursor:pointer;padding:10px;border-bottom:3px solid transparent}
+    .tab-button.active{border-bottom:3px solid #111;color:#111}
+    .tab-content{padding:20px 0;border-top:1px solid #ddd}
+
+    /* 섹션 배경 — 파일명 그대로 */
+    #info   {background-image:url('./img/relaxation-background-idea-concept.jpg')}
+    #artist {background-image:url('./img/0051b6e2-8278-4922-b270-1654ad68b6f7.jpg')}
+    #about  {background-image:url('./img/dabb876d0c22eedb0b5fef959a1a964e.jpg')}
+    #shop   {background-image:url('./img/unicorn-pastel-phone-wallpaper-background.jpg')}
+    #stage  {background-image:url('./img/bc0b8b8163556b2655966e9358ca4578.jpg')} /* 요청하신 파일명 보존 */
+
+    /* EFFECTS */
+    @keyframes wave-hand{0%{transform:rotate(0)}20%{transform:rotate(15deg)}40%{transform:rotate(-10deg)}60%{transform:rotate(10deg)}80%{transform:rotate(-5deg)}100%{transform:rotate(0)}}
+    .seed-wave{animation:wave-hand 1s ease-in-out;transform-origin:bottom center}
+
+    @keyframes slash{0%{transform:rotate(0)}20%{transform:rotate(-30deg)}40%{transform:rotate(10deg)}60%{transform:rotate(-20deg)}80%{transform:rotate(5deg)}100%{transform:rotate(0)}}
+    .jjiraeng-slash{animation:slash .8s ease-in-out;transform-origin:center bottom}
+
+    .white-box{background:#fff;padding:25px 40px;border-radius:15px;box-shadow:2px 4px 15px rgba(0,0,0,.2);display:inline-block;text-align:center;line-height:1.8;color:#3C2415;font-size:1.1rem;font-weight:500}
+
+    .membership-center{display:flex;flex-direction:column;align-items:center;justify-content:center;margin:40px auto;text-align:center}
+    .membership-center img{max-width:300px;width:100%}
+
+    @keyframes pebble-shake{0%{transform:translateX(0)}25%{transform:translateX(-2px)}50%{transform:translateX(2px)}75%{transform:translateX(-2px)}100%{transform:translateX(0)}}
+    .nervous-pebble{animation:pebble-shake .4s ease-in-out infinite}
+
+    .charles-wrapper{position:relative;display:inline-block}
+    .eye{position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;border:2px solid #000;overflow:hidden}
+    .eye-left{top:28px;left:40px}
+    .eye-right{top:28px;left:72px}
+    .eye::after{content:'';position:absolute;width:100%;height:100%;background:#000;border-radius:50%;animation:eyelid 3s infinite}
+    @keyframes eyelid{0%,90%,100%{transform:scaleY(0)}45%,55%{transform:scaleY(1)}}
+    .note{position:absolute;bottom:100px;left:65px;font-size:24px;color:#ff69b4;animation:floatNote 2s ease-in-out infinite}
+    @keyframes floatNote{0%{opacity:0;transform:translateY(0) scale(.8)}50%{opacity:1}100%{opacity:0;transform:translateY(-80px) scale(1)}}
+
+    .video-wrap{max-width:960px;margin:20px auto;text-align:center}
+    .hero-video{width:100%;height:auto;border-radius:12px;display:block}
+  </style>
+</head>
+<body>
+
+  <!-- HERO (요청 파일명 유지 + 유튜브 오버레이) -->
+  <section class="hero">
+    <iframe src="https://www.youtube.com/embed/JESHGc9PXNg?autoplay=1&mute=1&loop=1&playlist=JESHGc9PXNg&controls=0"
+      allow="autoplay; fullscreen" allowfullscreen></iframe>
+  </section>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-container">
+      <img src="./img/download.jpg" alt="Main Logo" class="logo" />
+      <ul id="gnb">
+        <li><a href="#film">HOME</a></li>
+        <li><a href="#info">INFO</a></li>
+        <li><a href="#artist">ARTIST</a></li>
+        <li><a href="#about">ABOUT</a></li>
+        <li><a href="#shop">SHOP</a></li>
+        <li><a href="#stage">STAGE & VOICE</a></li>
+      </ul>
+    </div>
+    <div class="gnb-icons">
+      <img src="./img/Notification.png" alt="bell" />
+      <img src="./img/Calendar.jpg" alt="calendar" />
+      <img src="./img/shoppingbasket.png" alt="basket" />
+      <img src="./img/My Information Icon.png" alt="user" />
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div id="wrapper">
+
+    <!-- FILM -->
+    <section id="film" style="background-image:none;">
+      <h2>FILMOGRAPHY</h2>
+      <p>도경수 배우의 영화 및 드라마 작품을 확인해보세요.</p>
+
+      <div class="video-wrap">
+        <video class="hero-video" controls preload="metadata" aria-label="도경수 필모그래피 30초 (AI 나레이션 포함)">
+          <source src="DOH KYUNG SOO in 30 seconds.mp4" type="video/mp4" />
+          <source src="DOH KYUNG SOO in 30 seconds.webm" type="video/webm" />
+        </video>
+      </div>
+      <p class="video-note">* 해당 영상은 추후 제작 완료 후 업데이트될 예정입니다.</p>
+    </section>
+
+    <!-- INFO -->
+    <section id="info">
+      <h2>INFO</h2>
+      <p>공지사항 및 연락처 정보를 이곳에서 확인하실 수 있습니다.</p>
+      <br><br><br>
+      <p>[안내] 도경수 첫 번째 정규 앨범 [BLISS] 발매 안내</p>
+      <br><br><br>
+      <p>[안내] 2025 DOH KYUNG SOO ASIA CONCERT TOUR &lt;DO it! in Seoul&gt; 드레스 코드 안내</p>
+      <br><br><br>
+      <p>[안내] 2025 DOH KYUNG SOO ASIA CONCERT TOUR &lt;DO it! in Seoul&gt; 부스 운영 타임테이블 안내</p>
+      <br><br><br>
+      <p>[안내] 2025 DOH KYUNG SOO ASIA CONCERT TOUR &lt;DO it! in Seoul&gt; 응원법 안내</p>
+      <br><br><br>
+      <p>2025 DOH KYUNG SOO ASIA CONCERT TOUR &lt;DO it! in Seoul&gt; OFFCIAL MD 안내</p>
+      <img src="./img/little_seed_08.png" alt="상냥한 꼬마씨앗" class="character" id="seed" />
+    </section>
+
+    <!-- ARTIST -->
+    <section id="artist">
+      <h2>ARTIST</h2>
+      <div class="white-box">
+        <img src="./img/jjiraeng_05.png" alt="펭귄 캐릭터" class="character" style="margin:30px auto;" id="jjiraeng" />
+        <p>아티스트의 프로필을 소개합니다.</p>
+        <p><strong>도경수</strong></p>
+        <p>생년월일: 1993.01.12</p>
+        <p>데뷔: 2012년 4월 8일 EXO</p>
+        <p>
+          SM엔터테인먼트 소속 보이그룹 EXO의 멤버. 디오(D.O.)라는 예명으로 그룹 내 메인보컬을 맡고 있으며,
+          2014년 드라마 &lt;괜찮아, 사랑이야&gt;를 통해 배우로 데뷔하였습니다.
+        </p>
+        <p>현재 음악, 연기, 예능 등 다방면에서 '멀티 엔터테이너'로서 활약하고 있습니다.</p>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <h2 class="dark-heading">ABOUT COMPANY SUSU</h2>
+      <div class="text-box">
+        <p>“새롭고 독립적인 아티스트를 응원합니다.”</p>
+        <p>컴퍼니수수는 아티스트 중심의 창작 생태계를 지향하며, 공연, 영상, 굿즈, 팬 플랫폼 등 다양한 형태로 연결된 콘텐츠를 제작합니다.</p>
+      </div>
+      <img src="./img/ipota.png" class="character" alt="소속사 소개" />
+    </section>
+
+    <!-- SHOP -->
+    <section id="shop">
+      <div style="text-align:center;margin-bottom:20px;">
+        <h2>SHOP</h2>
+        <p>아티스트 공식 굿즈를 구매하실 수 있습니다.</p>
+      </div>
+
+      <div class="nervous-pebble" style="margin-bottom:20px;">
+        <img src="./img/shy_stone_11.png" alt="눈치보는 조약돌" style="width:180px;height:auto;" />
+      </div>
+
+      <div style="margin-top:5px;">
+        <div id="shop-tabs" style="display:flex;justify-content:center;gap:20px;margin-bottom:20px;border-bottom:2px solid #ccc;">
+          <button class="tab-button active" data-tab="membership">MEMBERSHIP</button>
+          <button class="tab-button" data-tab="lightstick">OFFICIAL LIGHT STICK</button>
+          <button class="tab-button" data-tab="zzirang">ZZirang-e & Charles</button>
+        </div>
+
+        <div id="membership" class="tab-content" style="display:block;">
+          <div class="membership-center">
+            <img src="./img/MEMBERSHIP.jpg" alt="멤버십1" />
+            <img src="./img/MEMBERSHIP2.jpg" alt="멤버십2" />
+            <p><strong>DOH KYUNG SOO THE OFFICIAL FANCLUB</strong></p>
+            <p>멤버십 활동 안내 및 가입 링크</p>
+          </div>
+        </div>
+
+        <div id="lightstick" class="tab-content" style="display:none;">
+          <img src="./img/lightstick.png" style="width:400px;" alt="라이트스틱" />
+          <p><strong>DOH KYUNG SOO OFFICIAL LIGHT STICK</strong></p>
+          <p>45,000원</p>
+        </div>
+
+        <div id="zzirang" class="tab-content" style="display:none;">
+          <img src="./img/POPUP_01.png" style="width:400px;" alt="팝업1" />
+          <img src="./img/POPUP_02.png" style="width:400px;" alt="팝업2" />
+          <p>찌랭이와 찰스를 활용한 POP-UP STORE 굿즈를 만나보세요.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STAGE & VOICE -->
+    <section id="stage">
+      <h2>STAGE & VOICE</h2>
+      <p>음악과 목소리로 전하는 메시지를 영상으로 만나보세요.</p>
+      <div class="charles-wrapper">
+        <img src="./img/charles_02.png" class="character" alt="찰스" />
+        <div class="eye eye-left"></div>
+        <div class="eye eye-right"></div>
+        <div class="note">🎵</div>
+      </div>
+      <div class="video-grid" style="margin-top:30px;">
+        <div class="video-item"><iframe src="https://www.youtube.com/embed/BahC2CxQzD0" allowfullscreen></iframe></div>
+        <div class="video-item"><iframe src="https://www.youtube.com/embed/_TJlXlwJ6js" allowfullscreen></iframe></div>
+        <div class="video-item"><iframe src="https://www.youtube.com/embed/_btxV8tJM7w" allowfullscreen></iframe></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- SCRIPTS (vanilla) -->
+  <script>
+    // 탭
+    document.querySelectorAll('.tab-button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.dataset.tab;
+        document.querySelectorAll('.tab-content').forEach(c=>c.style.display='none');
+        document.querySelectorAll('.tab-button').forEach(b=>b.classList.remove('active'));
+        document.getElementById(id).style.display='block';
+        btn.classList.add('active');
+      });
+    });
+
+    // INFO: 씨앗 흔들기
+    const infoObserver=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const seed=document.getElementById('seed');
+          if(seed && !seed.classList.contains('seed-wave')){
+            seed.classList.add('seed-wave');
+            setTimeout(()=>seed.classList.remove('seed-wave'),1000);
+          }
+        }
+      })
+    },{threshold:.6});
+    const infoSec=document.getElementById('info'); if(infoSec) infoObserver.observe(infoSec);
+
+    // ARTIST: 찌랭이 칼질
+    const artistObserver=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const jj=document.getElementById('jjiraeng');
+          if(jj && !jj.classList.contains('jjiraeng-slash')){
+            jj.classList.add('jjiraeng-slash');
+            setTimeout(()=>jj.classList.remove('jjiraeng-slash'),1000);
+          }
+        }
+      })
+    },{threshold:.6});
+    const artistSec=document.getElementById('artist'); if(artistSec) artistObserver.observe(artistSec);
+  </script>
+</body>
+</html>
